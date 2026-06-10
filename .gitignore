@@ -1,0 +1,21 @@
+# Python venvs
+venv_asp/
+bim_env/
+train_env/
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# Large data / model weights
+raw_data/
+checkpoints/
+*.pth
+*.pkl
+*.npy
+
+# Pretrained / external weights
+pretrained_checkpoints/
+
+# OS
+.DS_Store
