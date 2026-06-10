@@ -71,28 +71,30 @@ These utilities were borrowed entirely. The contribution was composing them into
 
 All figure scripts were written by Claude (with layout/content directed by us), uploaded to Sherlock via hex-encoding, executed in `bim_env` (Python 3.9, skimage 0.24, matplotlib), and pulled back to Desktop via base64.
 
-### `fig1_generalizability.png`
-Four panels stacked vertically: H&E input → Real IHC → `asp_bci` output on MIST (cross-dataset, NDC=0.00) → `asp_mist` output on MIST (in-distribution, NDC=0.64).  
-Patch `2M2103108_13_23` selected by reconstructing `random.seed(0)` shuffle order from `evaluate.py` and ranking all MIST patches by `dair_bci_lam0_2`'s per-patch NDC score — this was the worst-performing patch. The cross-dataset model produces green artifacts with no DAB staining; the in-distribution model produces plausible near-white IHC.
+### Paper Figures
 
-### `fig2_robustness.png`
-Four panels stacked vertically: H&E (clean) → H&E (HSV-perturbed) → model output on clean input (NDC=0.99) → model output on perturbed input (NDC=0.00).  
-Patch `00467_test_1+` selected as the BCI patch with the largest NDC drop under HSV perturbation (0.987→0.000). The two H&E inputs are visually near-identical, but the model collapses entirely under the color shift — demonstrating color shortcut learning rather than morphological understanding.
+#### Figure 1 — `fig1_generalizability.png`
+Four panels stacked vertically: H&E input → Real IHC → `asp_bci` output on MIST (cross-dataset, NDC=0.00) → `asp_mist` output on MIST (in-distribution, NDC=0.64). Patch `2M2103108_13_23` selected by reconstructing `random.seed(0)` shuffle order from `evaluate.py` and ranking all MIST patches by `dair_bci_lam0_2`'s per-patch NDC score — the worst-performing patch. The cross-dataset model produces green artifacts with no DAB staining; the in-distribution model produces plausible near-white IHC.
 
-### `fig_ndc.png`
-Step-by-step explanation of how NDC is computed on a single patch. Two rows (Virtual IHC / Real IHC) × four columns (IHC Patch / H Channel / DAB Channel / Nuclei Mask), with arrows connecting stages. Count boxes (N\_virt, N\_real) feed into a final NDC result box. Font size FS=42; iterated through multiple rounds adjusting arrow placement and box sizing.
+#### Figure 2 — `fig2_robustness.png`
+Four panels stacked vertically: H&E (clean) → H&E (HSV-perturbed) → model output on clean input (NDC=0.99) → model output on perturbed input (NDC=0.00). Patch `00467_test_1+` selected as the BCI patch with the largest NDC drop under HSV perturbation (0.987→0.000). The two H&E inputs are visually near-identical, but the model collapses entirely under the color shift — demonstrating color shortcut learning rather than morphological understanding.
 
-### `fig_msic.png`
-Visualization of the MSIC threshold sweep. Shows the DAB positive-area curve at each threshold for real vs. virtual IHC, with Pearson correlation annotated as the MSIC score.
+### Poster Figures
 
-### `fig_sdc.png`
-Scatter plot of real nuclei density map pixel values vs. virtual density map pixel values, with Spearman ρ and p-value annotated. Result box placed inside the scatter area (repositioned in a later iteration to avoid overlap with arrows).
+#### Figure 1 — `fig_msic.png` — Membrane Staining Intensity Consistency
+Visualization of the MSIC threshold sweep. Four columns: IHC Patch → DAB Channel → DAB Saturation (binary masks at t=0.15, 0.30, 0.45) → DAB threshold sweep plot showing virtual vs. real positive-area curves. MSIC score (Pearson correlation between the two curves) annotated in a result box.
 
-### `fig_data_grid.png`
-2×2 grid of representative patches: BCI H&E (top-left), BCI IHC (top-right), MIST H&E (bottom-left), MIST IHC (bottom-right). Patches: `00000_train_1+` (BCI) and `100M2004069_10_12` (MIST). Used in the poster Data block. Iterated through a 1×4 horizontal layout before reverting to the 2×2 square.
+#### Figure 2 — `fig_ndc.png` — Nuclear Density Consistency
+Step-by-step explanation of NDC computation. Two rows (Virtual IHC / Real IHC) × four columns (IHC Patch / H Channel / DAB Channel / Nuclei Mask), with arrows connecting stages. Count boxes (N\_virt, N\_real) feed into a final NDC result box. Iterated through multiple rounds adjusting arrow placement, box sizing, and font scale.
 
-### `fig_mode_workflow2.png`
-Pipeline diagram distinguishing training mode from inference mode. Training branch: H&E → Generator → Virtual IHC, with a DAIR-SQ side branch (HSV perturb → Generator → squared-difference regularizer). Inference branch: H&E → Generator → Virtual IHC only. Built in matplotlib with `FancyBboxPatch` and annotated arrows, based on a reference image we provided. Iterated: all text enlarged, then "HSV Shift" label reduced relative to surrounding text.
+#### Figure 3 — `fig_sdc.png` — Spearman Density Consistency
+Three columns: IHC Patch → Nuclei Mask → Gaussian-smoothed density heatmap, plus a scatter plot of virtual vs. real IHC density values with Spearman ρ annotated. Result box repositioned inside the scatter area in a later iteration to avoid overlap with arrows.
+
+#### Data Section — `fig_data_grid.png`
+2×2 grid of representative patches embedded in the poster Data block (no figure number): BCI H&E (top-left), BCI IHC (top-right), MIST H&E (bottom-left), MIST IHC (bottom-right). Patches: `00000_train_1+` (BCI) and `100M2004069_10_12` (MIST). Iterated through a 1×4 horizontal layout before reverting to the 2×2 square.
+
+#### Models Section — `fig_mode_workflow2.png`
+DAIR-SQ workflow diagram embedded in the poster Models block (no figure number). Shows the generator trained on both original and HSV-perturbed inputs, with L\_orig, L\_pert, and R\_sq labeled. Built in matplotlib with `FancyBboxPatch` and annotated arrows, based on a reference image we provided. Iterated: all text enlarged, then "HSV Shift" label reduced relative to surrounding text.
 
 ---
 
